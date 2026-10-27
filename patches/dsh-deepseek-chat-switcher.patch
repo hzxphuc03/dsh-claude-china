@@ -1,0 +1,13 @@
+--- a/lib/client.js
++++ b/lib/client.js
+@@ -15393,7 +15393,9 @@
+           const brand = identity?.parentElement;
+           const row = brand?.parentElement;
+           if (!identity || identity.getAttribute("aria-hidden") !== "true" || !brand || !row?.hasAttribute("data-window-drag")) {
+-            host.remove();
++            /* claude-brand patch: fallback mount next to brand name instead of hiding the switcher */
++            if (host.previousElementSibling !== group) group.after(host);
++            host.setAttribute("data-claude-fallback", "true");
+             return;
+           }
+           if (host.parentElement !== row || brand.nextElementSibling !== host) brand.after(host);
